@@ -6,10 +6,12 @@ authors = [
     {name = "KarthikUdyawar",email = "karthikajitudy@gmail.com"}
 ]
 readme = "README.md"
-requires-python = ">=3.10"
+requires-python = ">=3.10,<4.0"
 dependencies = [
     "fastapi (>=0.115.11,<0.116.0)",
-    "pydantic-settings (>=2.8.1,<3.0.0)"
+    "pydantic-settings (>=2.8.1,<3.0.0)",
+    "pyyaml (>=6.0.2,<7.0.0)",
+    "loguru (>=0.7.3,<0.8.0)"
 ]
 
 [tool.poetry]

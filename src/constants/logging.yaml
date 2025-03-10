@@ -1,0 +1,21 @@
+handlers:
+  - sink: sys.stdout
+    level: DEBUG
+    format: "<green>{time:YYYY-MM-DD HH:mm:ss}</green> | <level>{level: <8}</level> | <cyan>{name}</cyan>:<magenta>{function}</magenta>:<yellow>{line}</yellow> | {message}"
+    colorize: true
+
+  - sink: "src/logs/errors-log.ndjson"
+    level: ERROR
+    rotation: "5 MB"
+    retention: "5 days"
+    format: "<green>{time:YYYY-MM-DD HH:mm:ss}</green> | <level>{level: <8}</level> | <cyan>{name}</cyan>:<magenta>{function}</magenta>:<yellow>{line}</yellow> | {message}"
+    serialize: true
+    compression: "gz"
+
+  - sink: "src/logs/app-log.ndjson"
+    level: INFO
+    rotation: "5 MB"
+    retention: "5 days"
+    format: "<green>{time:YYYY-MM-DD HH:mm:ss}</green> | <level>{level: <8}</level> | <cyan>{name}</cyan>:<magenta>{function}</magenta>:<yellow>{line}</yellow> | {message}"
+    serialize: true
+    compression: "gz"
