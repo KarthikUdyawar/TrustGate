@@ -1,6 +1,6 @@
 # Contributing to TrustGate
 
-Thank you for considering contributing to TrustGate! 
+Thank you for considering contributing to TrustGate!
 
 ## Getting Started
 - Fork the repository
