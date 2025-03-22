@@ -5,8 +5,11 @@ Pydantic's BaseSettings for type-safe environment variable management and valida
 """
 
 from functools import lru_cache
+from typing import Any, Dict
 
 from pydantic_settings import BaseSettings
+
+from core.logger import get_logger
 
 
 class Settings(BaseSettings):
@@ -27,6 +30,15 @@ class Settings(BaseSettings):
     VERSION: str = "0.1.0"
     MODE: str = "development"
 
+    VAULT_KV_VERSION: int = 2
+    VAULT_PROTOCOL: str = "https"
+    VAULT_HOST: str = "localhost"
+    VAULT_PORT: int = 8200
+    VAULT_REJECT_UNAUTHORIZED: bool = False
+    VAULT_CERTIFICATE: str = "/path/to/cert.pem"
+    VAULT_ROLE_ID: str = "my-role-id"
+    VAULT_SECRET_ID: str = "my-secret-id"
+
     def is_development(self) -> bool:
         """Check if the application is running in development mode.
 
@@ -43,6 +55,21 @@ class Settings(BaseSettings):
         """
         return f"v{self.VERSION}"
 
+    def get_vault_config(self) -> Dict[str, Any]:
+        """Retrieve Vault configuration details.
+
+        Returns:
+            Dict[str, Any]: A dictionary containing Vault configuration parameters.
+        """
+        return {
+            "path_suffix": "data" if self.VAULT_KV_VERSION > 1 else "",
+            "base_url": f"{self.VAULT_PROTOCOL}://{self.VAULT_HOST}:{self.VAULT_PORT}",
+            "reject_unauthorized": self.VAULT_REJECT_UNAUTHORIZED,
+            "certificate": self.VAULT_CERTIFICATE,
+            "role_id": self.VAULT_ROLE_ID,
+            "secret_id": self.VAULT_SECRET_ID,
+        }
+
     class Config:  # pylint: disable=too-few-public-methods
         """Configuration for Pydantic settings.
 
@@ -57,7 +84,7 @@ class Settings(BaseSettings):
         case_sensitive = False
 
 
-@lru_cache()
+@lru_cache(maxsize=1)
 def get_settings() -> Settings:
     """Retrieve and cache the application settings.
 
@@ -72,6 +99,8 @@ def get_settings() -> Settings:
 
 if __name__ == "__main__":
     # Example usage of the settings
+    log = get_logger()
     settings = get_settings()
-    print(settings.is_development())  # Prints whether in development mode
-    print(settings.get_app_version())  # Prints the formatted version string
+    log.info(settings.is_development())  # Prints whether in development mode
+    log.info(settings.get_app_version())  # Prints the formatted version string
+    log.info(settings.get_vault_config())

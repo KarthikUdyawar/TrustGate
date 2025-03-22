@@ -5,12 +5,15 @@ and customizable logging. It supports multiple output destinations, including co
 (sys.stdout) and rotating log files, with settings loaded from a YAML configuration file.
 """
 
+from __future__ import annotations
+
 import sys
 from functools import lru_cache
 from typing import Any
 
+import loguru
 import yaml
-from loguru import Logger, logger
+from loguru import logger
 
 
 class LoggerSetup:
@@ -98,7 +101,7 @@ class LoggerSetup:
 
 
 @lru_cache(maxsize=1)
-def get_logger() -> Logger:
+def get_logger() -> loguru.Logger:
     """Retrieve the configured Loguru logger instance.
 
     This function initializes the logger setup only once using an LRU cache to prevent
