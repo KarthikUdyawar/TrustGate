@@ -6,10 +6,11 @@ and customizable logging. It supports multiple output destinations, including co
 """
 
 import sys
+from functools import lru_cache
 from typing import Any
 
 import yaml
-from loguru import logger
+from loguru import Logger, logger
 
 
 class LoggerSetup:
@@ -96,16 +97,31 @@ class LoggerSetup:
             raise e
 
 
+@lru_cache(maxsize=1)
+def get_logger() -> Logger:
+    """Retrieve the configured Loguru logger instance.
+
+    This function initializes the logger setup only once using an LRU cache to prevent
+    multiple instantiations. It ensures the logging is configured when first called.
+
+    Returns:
+        loguru.Logger: The Loguru logger instance.
+    """
+    LoggerSetup()  # This ensures logging is configured only once.
+    return logger
+
+
 if __name__ == "__main__":
-    # Example usage of the LoggerSetup class
-    logger_setup = LoggerSetup()
-    logger.debug("Debug test message")
-    logger.info("Info test message")
-    logger.warning("Warning test message")
-    logger.error("Error test message")
-    logger.critical("Critical test message")
+    # Example usage
+    log = get_logger()
+
+    log.debug("Debug test message")
+    log.info("Info test message")
+    log.warning("Warning test message")
+    log.error("Error test message")
+    log.critical("Critical test message")
 
     try:
         raise ValueError("Test exception")
     except ValueError as e:
-        logger.exception(e)
+        log.exception(e)
