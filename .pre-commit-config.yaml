@@ -86,6 +86,7 @@ repos:
           - types-PyYAML
           - pydantic-settings
           - types-requests
+          - alembic
 
   # Documentation checks
   - repo: https://github.com/pycqa/pydocstyle

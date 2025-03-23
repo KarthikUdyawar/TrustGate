@@ -30,6 +30,7 @@ class Settings(BaseSettings):
     VERSION: str = "0.1.0"
     MODE: str = "development"
 
+    # Vault
     VAULT_KV_VERSION: int = 2
     VAULT_PROTOCOL: str = "https"
     VAULT_HOST: str = "localhost"
@@ -38,6 +39,13 @@ class Settings(BaseSettings):
     VAULT_CERTIFICATE: str = "/path/to/cert.pem"
     VAULT_ROLE_ID: str = "my-role-id"
     VAULT_SECRET_ID: str = "my-secret-id"
+
+    # Database
+    DB_USER: str = "admin"
+    DB_PASSWORD: str = "pwd"
+    DB_NAME: str = "auth_db"
+    DB_HOST: str = "localhost"
+    DB_PORT: int = 5432
 
     def is_development(self) -> bool:
         """Check if the application is running in development mode.
@@ -69,6 +77,13 @@ class Settings(BaseSettings):
             "role_id": self.VAULT_ROLE_ID,
             "secret_id": self.VAULT_SECRET_ID,
         }
+
+    def get_db_url(self) -> str:
+        """Retrieve database url."""
+        return (
+            f"postgresql://{self.DB_USER}:{self.DB_PASSWORD}"
+            f"@{self.DB_HOST}:{self.DB_PORT}/{self.DB_NAME}"
+        )
 
     class Config:  # pylint: disable=too-few-public-methods
         """Configuration for Pydantic settings.
