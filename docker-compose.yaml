@@ -1,0 +1,28 @@
+services:
+  vault:
+    image: hashicorp/vault:latest
+    container_name: vault
+    restart: unless-stopped
+    ports:
+      - '8200:8200'
+    cap_add:
+      - IPC_LOCK
+    profiles:
+      - vault
+    environment:
+      VAULT_ADDR: 'https://172.29.104.55:8200'
+      VAULT_API_ADDR: 'https://172.29.104.55:8200'
+      VAULT_CACERT: /vault/certs/vault-cert.pem
+    volumes:
+      - ./containers/vault/config:/vault/config
+      - ./containers/vault/certs:/vault/certs
+      - ./containers/vault/data:/vault/data
+    entrypoint:
+      - vault
+      - server
+      - -config=/vault/config/hcl.config
+
+networks:
+  default:
+    name: vault-network
+    driver: bridge

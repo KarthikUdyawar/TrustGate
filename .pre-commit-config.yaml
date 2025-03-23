@@ -85,6 +85,7 @@ repos:
           - fastapi
           - types-PyYAML
           - pydantic-settings
+          - types-requests
 
   # Documentation checks
   - repo: https://github.com/pycqa/pydocstyle
