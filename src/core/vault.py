@@ -6,6 +6,16 @@ from typing import Any, Dict, Optional
 import requests
 import urllib3
 from requests.adapters import HTTPAdapter
+from starlette.status import (
+    HTTP_200_OK,
+    HTTP_401_UNAUTHORIZED,
+    HTTP_403_FORBIDDEN,
+    HTTP_404_NOT_FOUND,
+    HTTP_500_INTERNAL_SERVER_ERROR,
+    HTTP_502_BAD_GATEWAY,
+    HTTP_503_SERVICE_UNAVAILABLE,
+    HTTP_504_GATEWAY_TIMEOUT,
+)
 from urllib3.exceptions import InsecureRequestWarning
 from urllib3.util.retry import Retry
 
@@ -51,7 +61,12 @@ class VaultSession:
         retry_strategy = Retry(
             total=3,
             backoff_factor=1,
-            status_forcelist=[500, 502, 503, 504],
+            status_forcelist=[
+                HTTP_500_INTERNAL_SERVER_ERROR,
+                HTTP_502_BAD_GATEWAY,
+                HTTP_503_SERVICE_UNAVAILABLE,
+                HTTP_504_GATEWAY_TIMEOUT,
+            ],
             allowed_methods=["GET", "POST", "DELETE"],
         )
         session.mount("https://", HTTPAdapter(max_retries=retry_strategy))
@@ -64,7 +79,7 @@ class VaultSession:
             response = self.session.get(
                 f"{base_url}/v1/sys/health", verify=self.verify
             )
-            return response.status_code == 200
+            return response.status_code == HTTP_200_OK
         except requests.RequestException:
             return False
 
@@ -116,7 +131,7 @@ class SecretManager:
                 verify=self.vault_session.verify,
             )
 
-            if response.status_code == 401:
+            if response.status_code == HTTP_401_UNAUTHORIZED:
                 raise AuthException("Invalid credentials")
 
             response.raise_for_status()
@@ -165,7 +180,7 @@ class SecretManager:
                 verify=self.vault_session.verify,
             )
 
-            if response.status_code == 403:
+            if response.status_code == HTTP_403_FORBIDDEN:
                 raise ForbiddenException("Insufficient permissions")
 
             response.raise_for_status()
@@ -196,11 +211,11 @@ class SecretManager:
                 verify=self.vault_session.verify,
             )
 
-            if response.status_code == 404:
+            if response.status_code == HTTP_404_NOT_FOUND:
                 self.logger.error(f"Secret not found at {full_path}")
                 raise NotFoundException("Secret not found")
 
-            if response.status_code == 403:
+            if response.status_code == HTTP_403_FORBIDDEN:
                 raise ForbiddenException("Insufficient permissions")
 
             response.raise_for_status()
@@ -230,11 +245,11 @@ class SecretManager:
                 verify=self.vault_session.verify,
             )
 
-            if response.status_code == 404:
+            if response.status_code == HTTP_404_NOT_FOUND:
                 self.logger.error(f"Secret not found at {full_path}")
                 raise NotFoundException("Secret not found")
 
-            if response.status_code == 403:
+            if response.status_code == HTTP_403_FORBIDDEN:
                 raise ForbiddenException("Insufficient permissions")
 
             response.raise_for_status()
