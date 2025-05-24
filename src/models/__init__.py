@@ -1,5 +1,6 @@
 """Initialize the models package."""
 
-from src.models.user import User
+from core.db import Base
+from models.role import Role, ScopeEnum
 
-__all__ = ["User"]
+__all__ = ["Base", "Role", "ScopeEnum"]

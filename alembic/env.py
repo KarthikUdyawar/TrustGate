@@ -11,7 +11,7 @@ from sqlalchemy import engine_from_config, pool
 
 from alembic import context  # pylint: disable=no-name-in-module
 from core.config import get_settings
-from core.db import Base
+from models import Base
 
 settings = get_settings()
 

@@ -59,6 +59,7 @@ repos:
     hooks:
       - id: pylint
         args: ["--disable=W0613,C0103,E0401,W0212,W0621"]
+        exclude: ^alembic/
 
   # Security checks
   - repo: https://github.com/PyCQA/bandit

@@ -35,7 +35,7 @@ class Settings(BaseSettings):
     VAULT_PROTOCOL: str = "https"
     VAULT_HOST: str = "localhost"
     VAULT_PORT: int = 8200
-    VAULT_REJECT_UNAUTHORIZED: bool = False
+    VAULT_REJECT_UNAUTHORIZED: str = "False"
     VAULT_CERTIFICATE: str = "/path/to/cert.pem"
     VAULT_ROLE_ID: str = "my-role-id"
     VAULT_SECRET_ID: str = "my-secret-id"
@@ -46,6 +46,7 @@ class Settings(BaseSettings):
     DB_NAME: str = "auth_db"
     DB_HOST: str = "localhost"
     DB_PORT: int = 5432
+    DB_BACKUP_PASSPHRASE: str = "pwd"
 
     def is_development(self) -> bool:
         """Check if the application is running in development mode.
@@ -72,7 +73,7 @@ class Settings(BaseSettings):
         return {
             "path_suffix": "data" if self.VAULT_KV_VERSION > 1 else "",
             "base_url": f"{self.VAULT_PROTOCOL}://{self.VAULT_HOST}:{self.VAULT_PORT}",
-            "reject_unauthorized": self.VAULT_REJECT_UNAUTHORIZED,
+            "reject_unauthorized": bool(self.VAULT_REJECT_UNAUTHORIZED),
             "certificate": self.VAULT_CERTIFICATE,
             "role_id": self.VAULT_ROLE_ID,
             "secret_id": self.VAULT_SECRET_ID,

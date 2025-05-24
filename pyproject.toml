@@ -28,6 +28,7 @@ dependencies = [
   "pyyaml>=6.0.2,<7",
   "requests>=2.32.3,<3",
   "sqlalchemy>=2.0.39,<3",
+  "uvicorn>=0.34,<0.35",
 ]
 
 [tool.poetry]
@@ -37,6 +38,7 @@ packages = [
   { include = "core", from = "src" },
   { include = "models", from = "src" },
   { include = "routes", from = "src" },
+  { include = "schemas", from = "src" },
   { include = "services", from = "src" },
   { include = "utils", from = "src" },
 ]

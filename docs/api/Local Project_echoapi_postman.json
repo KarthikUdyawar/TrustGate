@@ -1,0 +1,185 @@
+{
+	"info": {
+		"name": "Local Project",
+		"description": "",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "TrustGate API",
+			"description": "",
+			"sort": 2,
+			"item": [
+				{
+					"name": "Health Check",
+					"description": "",
+					"sort": 1,
+					"item": [
+						{
+							"name": "Health Check",
+							"description": "",
+							"protocolProfileBehavior": {
+								"disableBodyPruning": true
+							},
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "",
+									"query": [],
+									"variable": []
+								}
+							},
+							"sort": 2
+						}
+					]
+				},
+				{
+					"name": "Admin",
+					"description": "",
+					"sort": 2,
+					"item": [
+						{
+							"name": "Role",
+							"description": "",
+							"sort": 1,
+							"item": [
+								{
+									"name": "Get All Roles",
+									"description": "",
+									"protocolProfileBehavior": {
+										"disableBodyPruning": true
+									},
+									"request": {
+										"method": "GET",
+										"header": [],
+										"url": {
+											"raw": "api/v1/roles",
+											"query": [],
+											"variable": []
+										}
+									},
+									"sort": 1
+								},
+								{
+									"name": "Get Role",
+									"description": "",
+									"protocolProfileBehavior": {
+										"disableBodyPruning": true
+									},
+									"request": {
+										"method": "GET",
+										"header": [],
+										"url": {
+											"raw": "api/v1/roles/{role_id}",
+											"query": [],
+											"variable": [
+												{
+													"key": "role_id",
+													"value": "fed60486-90c2-4164-9da6-238304636ef5",
+													"description": ""
+												}
+											]
+										}
+									},
+									"sort": 2
+								},
+								{
+									"name": "Create Role",
+									"description": "",
+									"protocolProfileBehavior": {
+										"disableBodyPruning": true
+									},
+									"request": {
+										"method": "POST",
+										"header": [],
+										"url": {
+											"raw": "api/v1/roles",
+											"query": [],
+											"variable": []
+										},
+										"body": {
+											"mode": "raw",
+											"raw": "{\n\t\"name\": \"Test\"\n}",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										}
+									},
+									"sort": 3
+								},
+								{
+									"name": "Update Role",
+									"description": "",
+									"protocolProfileBehavior": {
+										"disableBodyPruning": true
+									},
+									"request": {
+										"method": "PUT",
+										"header": [],
+										"url": {
+											"raw": "api/v1/roles/{role_id}",
+											"query": [],
+											"variable": [
+												{
+													"key": "role_id",
+													"value": "ef102192-5153-4962-a412-35084dcb95a6",
+													"description": ""
+												}
+											]
+										},
+										"body": {
+											"mode": "raw",
+											"raw": "{\n\t// \"name\": \"Tenant\",\n\t\"scopes\": [\n\t\t// \"read:global\",\n\t\t// \"write:global\",\n\t\t// \"delete:global\",\n\t\t// \"read:tenant\",\n\t\t// \"write:tenant\",\n\t\t// \"delete:tenant\",\n\t\t// \"read:project\",\n\t\t// \"write:project\",\n\t\t// \"delete:project\",\n\t\t\"read:client\",\n\t\t\"write:client\",\n\t\t\"delete:client\"\n\t]\n}",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										}
+									},
+									"sort": 4
+								},
+								{
+									"name": "Delete Role",
+									"description": "",
+									"protocolProfileBehavior": {
+										"disableBodyPruning": true
+									},
+									"request": {
+										"method": "DELETE",
+										"header": [],
+										"url": {
+											"raw": "api/v1/roles/{role_id}?hard_delete=true",
+											"query": [
+												{
+													"key": "hard_delete",
+													"value": "true",
+													"description": "",
+													"disabled": false
+												}
+											],
+											"variable": [
+												{
+													"key": "role_id",
+													"value": "14b7ea23-7eeb-4fd7-85f2-a3431ce26a36",
+													"description": ""
+												}
+											]
+										}
+									},
+									"sort": 5
+								}
+							]
+						}
+					]
+				}
+			]
+		}
+	],
+	"variable": [],
+	"event": [],
+	"auth": {}
+}
